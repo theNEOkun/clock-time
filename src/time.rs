@@ -1,8 +1,12 @@
 use std::time::{Duration, SystemTime, UNIX_EPOCH};
 
+/// Number of hours per day
 const HOURS_PER_DAY: usize = 24;
+/// Number of minutes per hour
 const MINUTES_PER_HOUR: usize = 60;
+/// Number of seconds per minute
 const SECONDS_PER_MINUTE: usize = 60;
+/// The current timezone
 const MY_TIMEZONE: usize = 2 * MINUTES_PER_HOUR * SECONDS_PER_MINUTE;
 
 pub struct Time;
@@ -25,7 +29,6 @@ impl Time {
      * Time presumed to be in milliseconds
      *
      * ## Example
-     *
      * Given 1000 milliseconds, will return 1 second
      *
      * ## Arguments
@@ -57,8 +60,7 @@ impl Time {
      * Time presumed to be in milliseconds
      *
      * ## Example
-     *
-     * Given 1000 milliseconds, will return 0 minutes
+     * Given 60000 milliseconds, will return 1 minutes
      *
      * ## Arguments
      * * time - Time in milliseconds given as unix_time
