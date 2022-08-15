@@ -3,15 +3,21 @@ use std::time::{Duration, SystemTime, UNIX_EPOCH};
 const HOURS_PER_DAY: usize = 24;
 const MINUTES_PER_HOUR: usize = 60;
 const SECONDS_PER_MINUTE: usize = 60;
+const MY_TIMEZONE: usize = 2 * MINUTES_PER_HOUR * SECONDS_PER_MINUTE;
 
 pub struct Time;
 
 /// Used to format time in different formats
 impl Time {
+
+    /**
+     * Used to get the current time in Duration from UNIX_EPOCH
+     */
     pub fn get_current_time() -> Duration {
         SystemTime::now()
             .duration_since(UNIX_EPOCH)
             .expect("time went backwards")
+            + Duration::from_secs(MY_TIMEZONE as u64)
     }
 
     /**
@@ -43,7 +49,7 @@ impl Time {
      * The given time in hours of the day
      */
     pub fn format_seconds(time: &Duration) -> usize {
-        Self::get_seconds(time) % 60
+        Self::get_seconds(time) % SECONDS_PER_MINUTE
     }
 
     /**
@@ -75,7 +81,7 @@ impl Time {
      * The given time in hours of the day
      */
     pub fn format_minutes(time: &Duration) -> usize {
-        Self::get_minutes(time) % 60
+        Self::get_minutes(time) % MINUTES_PER_HOUR
     }
 
     /**
@@ -103,7 +109,7 @@ impl Time {
      * The given time in hours of the day
      */
     pub fn format_hours(time: &Duration) -> usize {
-        Self::get_hours(time) % 24
+        Self::get_hours(time) % HOURS_PER_DAY
     }
 }
 
