@@ -119,9 +119,7 @@ mod time_test {
 
     #[test]
     fn test_seconds() {
-        let current_time = SystemTime::now()
-            .duration_since(UNIX_EPOCH)
-            .expect("time went backwards");
+        let current_time = Time::get_current_time();
 
         let seconds = Time::get_seconds(&current_time);
 
@@ -130,9 +128,7 @@ mod time_test {
 
     #[test]
     fn test_minutes() {
-        let current_time = SystemTime::now()
-            .duration_since(UNIX_EPOCH)
-            .expect("time went backwards");
+        let current_time = Time::get_current_time();
 
         let seconds = Time::get_minutes(&current_time);
 
@@ -144,9 +140,7 @@ mod time_test {
 
     #[test]
     fn test_hours() {
-        let current_time = SystemTime::now()
-            .duration_since(UNIX_EPOCH)
-            .expect("time went backwards");
+        let current_time = Time::get_current_time();
 
         let seconds = Time::get_hours(&current_time);
 
