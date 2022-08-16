@@ -1,44 +1,40 @@
 mod circle;
 mod time;
-
-use crossterm::{
-    cursor,
-    style::{self, Stylize},
-    terminal, ExecutableCommand, QueueableCommand, Result,
-};
+mod term;
 use std::{
-    io::{stdout, Write},
     thread,
     time::Duration,
 };
 
 use circle::Circle;
 use time::Time;
+use term::Term;
 
 const DELAY: u64 = 1;
 
-fn draw_seconds(put_pixel: &mut dyn FnMut(i16, i16, &str), circle: &Circle, second: usize) {
+fn draw_seconds(term: &mut Term, circle: &Circle, second: usize) {
     let angle = (second / 6) as usize;
     let point = circle.get_point(angle, |radius, angle| -> usize {
-        radius * (if angle > 0 { angle - 1 } else { angle })
+        radius * (if angle > 0 { angle - 1 } else { 1 })
     });
 }
 
-fn draw_minutes(put_pixel: &mut dyn FnMut(i16, i16, &str), circle: &Circle, minutes: usize) {
+fn draw_minutes(term: &mut Term, circle: &Circle, minutes: usize) {
     let angle = (minutes / 6) as usize;
     let point = circle.get_point(angle, |radius, angle| -> usize {
-        radius * (if angle > 0 { angle / 2 } else { angle })
+        radius * (if angle > 0 { angle / 2 } else { 1 })
     });
 }
 
-fn draw_hours(put_pixel: &mut dyn FnMut(i16, i16, &str), circle: &Circle, hours: usize) {
+fn draw_hours(term: &mut Term, circle: &Circle, hours: usize) {
     let angle = (hours / 6) as usize;
     let point = circle.get_point(angle, |radius, angle| -> usize {
-        radius * (if angle > 0 { angle - 1 } else { angle })
+        radius * (if angle > 0 { angle - 1 } else { 1 })
     });
+    term.draw_line(&circle.center, &point, "-");
 }
 
-fn draw_clock(put_pixel: &mut dyn FnMut(i16, i16, &str), circle: &Circle) {
+fn draw_clock(term: &mut Term, circle: &Circle) {
     let radius = circle.radius as i16;
     let diam = (radius << 1) as i16;
 
@@ -54,14 +50,14 @@ fn draw_clock(put_pixel: &mut dyn FnMut(i16, i16, &str), circle: &Circle) {
     let what = "*";
 
     while x >= y {
-        put_pixel(x0 + x, y0 + y, what);
-        put_pixel(x0 + y, y0 + x, what);
-        put_pixel(x0 - y, y0 + x, what);
-        put_pixel(x0 - x, y0 + y, what);
-        put_pixel(x0 + y, y0 - x, what);
-        put_pixel(x0 + x, y0 - y, what);
-        put_pixel(x0 - x, y0 - y, what);
-        put_pixel(x0 - y, y0 - x, what);
+        term.put_pixel(x0 + x, y0 + y, what);
+        term.put_pixel(x0 + y, y0 + x, what);
+        term.put_pixel(x0 - y, y0 + x, what);
+        term.put_pixel(x0 - x, y0 + y, what);
+        term.put_pixel(x0 + y, y0 - x, what);
+        term.put_pixel(x0 + x, y0 - y, what);
+        term.put_pixel(x0 - x, y0 - y, what);
+        term.put_pixel(x0 - y, y0 - x, what);
 
         if err <= 0 {
             y += 1;
@@ -77,11 +73,14 @@ fn draw_clock(put_pixel: &mut dyn FnMut(i16, i16, &str), circle: &Circle) {
     }
 }
 
-fn main() -> Result<()> {
-    let mut stdout = stdout();
+fn main() {
+
+    let mut term = Term::new();
 
     loop {
-        stdout.execute(terminal::Clear(terminal::ClearType::All))?;
+
+        term.clear();
+
         let time = Time::get_current_time();
         let seconds = Time::format_seconds(&time);
         let minutes = Time::format_minutes(&time);
@@ -89,22 +88,14 @@ fn main() -> Result<()> {
 
         let circle = Circle::new(20, 20);
 
-        let mut put_pixel = |x: i16, y: i16, what: &str| {
-            let x = x << 2;
-            stdout
-                .queue(cursor::MoveTo(x as u16, y as u16))
-                .expect("Something went wrong when drawing the circle")
-                .queue(style::PrintStyledContent(what.magenta()))
-                .expect("Something went wrong with the coloring");
-        };
+        draw_clock(&mut term, &circle);
 
-        draw_clock(&mut put_pixel, &circle);
+        draw_seconds(&mut term, &circle, seconds);
+        draw_minutes(&mut term, &circle, minutes);
+        draw_hours(&mut term, &circle, hours);
 
-        draw_seconds(&mut put_pixel, &circle, seconds);
-        draw_minutes(&mut put_pixel, &circle, minutes);
-        draw_hours(&mut put_pixel, &circle, hours);
+        term.flush();
 
-        stdout.flush()?;
 
         thread::sleep(Duration::from_secs(DELAY));
     }
