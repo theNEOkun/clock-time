@@ -123,6 +123,8 @@ impl Term {
         self.stdout
             .queue(cursor::MoveTo(x as u16, y as u16))
             .expect("Something went wrong when drawing the circle")
+            .queue(cursor::Hide)
+            .expect("Could not hide the cursor")
             .queue(PrintStyledContent(*what))
             .expect("Something went wrong with the coloring");
     }

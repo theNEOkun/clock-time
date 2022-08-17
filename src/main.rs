@@ -25,7 +25,7 @@ fn draw_seconds(term: &mut Term, circle: &Circle, second: usize) {
     let point = circle.get_point(angle_d, |radius, angle| -> f64 {
         angle * (radius - 1) as f64
     });
-    term.draw_line(&circle.center, &point, &"-".dark_green());
+    term.draw_line(&circle.center, &point, &"s".dark_green());
 }
 
 /**
@@ -42,7 +42,7 @@ fn draw_minutes(term: &mut Term, circle: &Circle, minutes: usize) {
     let point = circle.get_point(angle_d, |radius, angle| -> f64 {
         angle * (radius - 3) as f64
     });
-    term.draw_line(&circle.center, &point, &",".yellow());
+    term.draw_line(&circle.center, &point, &"m".yellow());
 }
 
 /**
@@ -60,7 +60,7 @@ fn draw_hours(term: &mut Term, circle: &Circle, hours: usize, minutes: usize) {
     let point = circle.get_point(angle_d, |radius, angle| -> f64 {
         angle * (radius / 2) as f64
     });
-    term.draw_line(&circle.center, &point, &"+".yellow());
+    term.draw_line(&circle.center, &point, &"h".blue());
 }
 
 fn main() {
