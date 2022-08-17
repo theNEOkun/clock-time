@@ -28,7 +28,6 @@ impl Term {
     }
 
     pub fn draw_line(&mut self, start: &Point, end: &Point, what: &StyledContent<&str>) {
-        //let (start, end) = if start > end { (end, start) } else { (start, end) };
         let (start_x, end_x) = if start.x < end.x {
             (start.x, end.x)
         } else {
@@ -41,13 +40,14 @@ impl Term {
         };
         for each_y in start_y..=end_y {
             for each_x in start_x..=end_x {
-                let each_x = (each_y - start_y) * ((end_y - start_y) / (end_x - start_x)) + start_y;
+                //let each_x = (each_y - start_y) * (end_x - start_x) / (end_y - start_y) + start_x;
                 self.put_pixel(each_x as i16, each_y as i16, what);
             }
         }
     }
 
     pub fn put_pixel(&mut self, x: i16, y: i16, what: &StyledContent<&str>) {
+        let x = x << 1;
         self.stdout
             .queue(cursor::MoveTo(x as u16, y as u16))
             .expect("Something went wrong when drawing the circle")

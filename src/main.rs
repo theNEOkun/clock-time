@@ -20,18 +20,21 @@ fn draw_seconds(term: &mut Term, circle: &Circle, second: usize) {
 }
 
 fn draw_minutes(term: &mut Term, circle: &Circle, minutes: usize) {
-    let angle = (minutes / 6);
-    let angle = angle as f64 / 57.2958;
-    //let point = circle.get_point(angle, |radius, angle| -> isize {
-    //    angle * (radius / 2)
-    //});
+    let angle = (minutes * 6) as f64;
+    let angle_d = angle / 57.2958;
+    let point = circle.get_point(angle_d, |radius, angle| -> f64 {
+        angle * (radius / 2) as f64
+    });
+    term.draw_line(&circle.center, &point, &",".yellow());
 }
 
 fn draw_hours(term: &mut Term, circle: &Circle, hours: usize) {
-    let angle = (hours / 6) as isize;
-    //let point = circle.get_point(angle, |radius, angle| -> isize {
-    //    angle * (radius - 1)
-    //});
+    let angle = (hours * 6) as f64;
+    let angle_d = angle / 57.2958;
+    let point = circle.get_point(angle_d, |radius, angle| -> f64 {
+        angle * (radius - 1) as f64
+    });
+    term.draw_line(&circle.center, &point, &"+".yellow());
 }
 
 fn draw_clock(term: &mut Term, circle: &Circle) {
@@ -75,13 +78,12 @@ fn draw_clock(term: &mut Term, circle: &Circle) {
 
 fn main() {
     let mut term = Term::new();
-
-    /*
+/*
     term.clear();
-    term.draw_line(&Point { x: 1, y: 1 }, &Point { x: 10, y: 5 }, "*");
+    term.draw_line(&Point { x: 0, y: 0 }, &Point { x: 10, y: 5 }, &"*".magenta());
 
     term.flush();
-    */
+*/
     loop {
 
         term.clear();
@@ -91,7 +93,7 @@ fn main() {
         let minutes = Time::format_minutes(&time);
         let hours = Time::format_hours(&time);
 
-        let circle = Circle::new(20, 20);
+        let circle = Circle::new(30, 30);
 
         draw_clock(&mut term, &circle);
 
@@ -100,7 +102,6 @@ fn main() {
         draw_hours(&mut term, &circle, hours);
 
         term.flush();
-
 
         thread::sleep(Duration::from_secs(DELAY));
     }
