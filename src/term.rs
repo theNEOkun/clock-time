@@ -6,7 +6,7 @@ use crossterm::{
     terminal, ExecutableCommand, QueueableCommand, Result,
 };
 
-use crate::circle::{Point, Circle};
+use crate::circle::{Circle, Point};
 
 pub struct Term {
     stdout: Stdout,
@@ -17,30 +17,24 @@ impl Term {
         Self { stdout: stdout() }
     }
 
-    /**
-     * Method to clear the screen
-     */
+    /// Method to clear the screen
     pub fn clear(&mut self) {
         self.stdout
             .execute(terminal::Clear(terminal::ClearType::All))
             .expect("Could not clear the screen");
     }
 
-    /**
-     * Method to flush the input
-     */
+    /// Method to flush the input
     pub fn flush(&mut self) {
         self.stdout.flush().expect("Could not flush the screen");
     }
 
-    /**
-     * Function to draw the circle to the screen
-     * It uses some algorithm that I cannot use right now
-     *
-     * ## Arguments
-     *
-     * * circle - The circle to draw
-     */
+    /// Function to draw the circle to the screen
+    /// It uses some algorithm that I cannot use right now
+    ///
+    /// ## Arguments
+    ///
+    /// * circle - The circle to draw
     pub fn draw_clock(&mut self, circle: &Circle) {
         let radius = circle.radius as i16;
         let diam = (radius << 1) as i16;
@@ -80,22 +74,24 @@ impl Term {
         }
     }
 
-    /**
-     * Method to draw a line to the terminal
-     *
-     * ## Arguments
-     * * start - The point to start the line from
-     * * end - The point to end the line
-     *
-     * Both use the Point-struct
-     *
-     * * what - What to write on the lines. Uses StyledContent
-     */
+    /// Method to draw a line to the terminal
+    ///
+    /// ## Arguments
+    /// * start - The point to start the line from
+    /// * end - The point to end the line
+    ///
+    /// Both use the Point-struct
+    ///
+    /// * what - What to write on the lines. Uses StyledContent
     pub fn draw_line(&mut self, start: &Point, end: &Point, what: &StyledContent<&str>) {
         let dx = (end.x - start.x) as f64;
         let dy = (end.y - start.y) as f64;
 
-        let len = if dx.abs() > dy.abs() { dx.abs() } else { dy.abs() } as f64;
+        let len = if dx.abs() > dy.abs() {
+            dx.abs()
+        } else {
+            dy.abs()
+        } as f64;
 
         let xinc = dx / len;
         let yinc = dy / len;
@@ -110,14 +106,12 @@ impl Term {
         }
     }
 
-    /**
-     * Method to put a pixel at the x and y coordinates
-     *
-     * ## Arguments
-     * * x - The x-position to write to
-     * * y - the y-position to write to
-     * * what - What to write at that position
-     */
+    /// Method to put a pixel at the x and y coordinates
+    ///
+    /// ## Arguments
+    /// * x - The x-position to write to
+    /// * y - the y-position to write to
+    /// * what - What to write at that position
     pub fn put_pixel(&mut self, x: i16, y: i16, what: &StyledContent<&str>) {
         let x = x << 1;
         self.stdout

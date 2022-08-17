@@ -1,22 +1,19 @@
 use std::time::{Duration, SystemTime, UNIX_EPOCH};
 
-/// Number of hours per day
+//// Number of hours per day
 const HOURS_PER_DAY: usize = 24;
-/// Number of minutes per hour
+//// Number of minutes per hour
 const MINUTES_PER_HOUR: usize = 60;
-/// Number of seconds per minute
+//// Number of seconds per minute
 const SECONDS_PER_MINUTE: usize = 60;
-/// The current timezone
+//// The current timezone
 const MY_TIMEZONE: usize = 2 * MINUTES_PER_HOUR * SECONDS_PER_MINUTE;
 
 pub struct Time;
 
-/// Used to format time in different formats
+//// Used to format time in different formats
 impl Time {
-
-    /**
-     * Used to get the current time in Duration from UNIX_EPOCH
-     */
+    /// Used to get the current time in Duration from UNIX_EPOCH
     pub fn get_current_time() -> Duration {
         SystemTime::now()
             .duration_since(UNIX_EPOCH)
@@ -24,92 +21,80 @@ impl Time {
             + Duration::from_secs(MY_TIMEZONE as u64)
     }
 
-    /**
-     * Used to format the time given in seconds
-     * Time presumed to be in milliseconds
-     *
-     * ## Example
-     * Given 1000 milliseconds, will return 1 second
-     *
-     * ## Arguments
-     * * time - Time in milliseconds given as unix_time
-     *
-     * ## Returns
-     * The given time in seconds of the day
-     */
+    /// Used to format the time given in seconds
+    /// Time presumed to be in milliseconds
+    ///
+    /// ## Example
+    /// Given 1000 milliseconds, will return 1 second
+    ///
+    /// ## Arguments
+    /// * time - Time in milliseconds given as unix_time
+    ///
+    /// ## Returns
+    /// The given time in seconds of the day
     pub fn get_seconds(time: &Duration) -> usize {
         time.as_secs() as usize
     }
 
-    /**
-     * Used to get the time in minutes, formated in 60s
-     * Time presumed to be in milliseconds
-     *
-     * ## Arguments
-     * * time - Time in milliseconds given as unix_time
-     *
-     * ## Returns
-     * The given time in hours of the day
-     */
+    /// Used to get the time in minutes, formated in 60s
+    /// Time presumed to be in milliseconds
+    ///
+    /// ## Arguments
+    /// * time - Time in milliseconds given as unix_time
+    ///
+    /// ## Returns
+    /// The given time in hours of the day
     pub fn format_seconds(time: &Duration) -> usize {
         Self::get_seconds(time) % SECONDS_PER_MINUTE
     }
 
-    /**
-     * Used to get the given time in minutes
-     * Time presumed to be in milliseconds
-     *
-     * ## Example
-     * Given 60000 milliseconds, will return 1 minutes
-     *
-     * ## Arguments
-     * * time - Time in milliseconds given as unix_time
-     *
-     * ## Returns
-     * The given time in minutes of the day
-     */
+    /// Used to get the given time in minutes
+    /// Time presumed to be in milliseconds
+    ///
+    /// ## Example
+    /// Given 60000 milliseconds, will return 1 minutes
+    ///
+    /// ## Arguments
+    /// * time - Time in milliseconds given as unix_time
+    ///
+    /// ## Returns
+    /// The given time in minutes of the day
     pub fn get_minutes(time: &Duration) -> usize {
         Self::get_seconds(time) / SECONDS_PER_MINUTE
     }
 
-    /**
-     * Used to get the time in minutes, formated in 60m
-     * Time presumed to be in milliseconds
-     *
-     * ## Arguments
-     * * time - Time in milliseconds given as unix_time
-     *
-     * ## Returns
-     * The given time in hours of the day
-     */
+    /// Used to get the time in minutes, formated in 60m
+    /// Time presumed to be in milliseconds
+    ///
+    /// ## Arguments
+    /// * time - Time in milliseconds given as unix_time
+    ///
+    /// ## Returns
+    /// The given time in hours of the day
     pub fn format_minutes(time: &Duration) -> usize {
         Self::get_minutes(time) % MINUTES_PER_HOUR
     }
 
-    /**
-     * Used to get the given time in hours
-     * Time presumed to be in milliseconds
-     *
-     * ## Arguments
-     * * time - Time in milliseconds given as unix_time
-     *
-     * ## Returns
-     * The given time in hours of the day
-     */
+    /// Used to get the given time in hours
+    /// Time presumed to be in milliseconds
+    ///
+    /// ## Arguments
+    /// * time - Time in milliseconds given as unix_time
+    ///
+    /// ## Returns
+    /// The given time in hours of the day
     pub fn get_hours(time: &Duration) -> usize {
         Self::get_minutes(time) / MINUTES_PER_HOUR
     }
 
-    /**
-     * Used to get the time in hours, formatted in 24h
-     * Time presumed to be in milliseconds
-     *
-     * ## Arguments
-     * * time - Time in milliseconds given as unix_time
-     *
-     * ## Returns
-     * The given time in hours of the day
-     */
+    /// Used to get the time in hours, formatted in 24h
+    /// Time presumed to be in milliseconds
+    ///
+    /// ## Arguments
+    /// * time - Time in milliseconds given as unix_time
+    ///
+    /// ## Returns
+    /// The given time in hours of the day
     pub fn format_hours(time: &Duration) -> usize {
         Self::get_hours(time) % HOURS_PER_DAY
     }
