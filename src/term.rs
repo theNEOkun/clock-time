@@ -8,6 +8,7 @@ use crossterm::{
 
 use crate::circle::{Circle, Point};
 
+/// Struct that abstracts where the information is written
 pub struct Term {
     stdout: Stdout,
 }

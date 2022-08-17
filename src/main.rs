@@ -11,7 +11,10 @@ use circle::{Circle, Point};
 use term::Term;
 use time::Time;
 
+/// How long should the loop wait before it should repeat
 const DELAY: u64 = 1;
+
+/// How many degrees in a rad, and change to and from them
 const DEG_TO_RAD: f64 = 57.29577;
 
 /// Function used to draw the second-hand
@@ -60,6 +63,12 @@ fn draw_hours(term: &mut Term, circle: &Circle, hours: usize, minutes: usize) {
     term.draw_line(&circle.center, &point, &"h".blue());
 }
 
+/// Function to write the stubs along the clock-rim
+///
+/// ## Arguments
+///
+/// * term - The terminal to write to
+/// * circle - The circle used for the clock-face
 fn draw_stubs(term: &mut Term, circle: &Circle) {
     for angle in (0..360).step_by(120) {
         let angle_d = angle as f64 / DEG_TO_RAD;
