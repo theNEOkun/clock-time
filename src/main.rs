@@ -10,9 +10,9 @@ use time::Time;
 const DELAY: u64 = 1;
 
 fn draw_seconds(term: &mut Term, circle: &Circle, second: usize) {
-    let angle = second * 6;
-    let angle = angle as f64 / 57.2958;
-    let point = circle.get_point(angle, |radius, angle| -> f64 {
+    let angle = (second * 6) as f64;
+    let angle_d = angle / 57.2958;
+    let point = circle.get_point(angle_d, |radius, angle| -> f64 {
         angle * (radius - 1) as f64
     });
     term.draw_line(&circle.center, &point, "-");
@@ -83,7 +83,7 @@ fn main() {
     */
     loop {
 
-        term.clear();
+        //term.clear();
 
         let time = Time::get_current_time();
         let seconds = Time::format_seconds(&time);
@@ -92,13 +92,13 @@ fn main() {
 
         let circle = Circle::new(20, 20);
 
-        draw_clock(&mut term, &circle);
+        //draw_clock(&mut term, &circle);
 
         draw_seconds(&mut term, &circle, seconds);
         draw_minutes(&mut term, &circle, minutes);
         draw_hours(&mut term, &circle, hours);
 
-        term.flush();
+        //term.flush();
 
 
         thread::sleep(Duration::from_secs(DELAY));
