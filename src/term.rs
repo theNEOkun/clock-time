@@ -28,13 +28,21 @@ impl Term {
     }
 
     pub fn draw_line(&mut self, start: &Point, end: &Point, what: &str) {
-        let (start, end) = if start > end { (end, start) } else { (start, end) };
-        println!("{start:?}: {end:?}");
-        for each_y in start.y..=end.y {
-            for each_x in start.x..=end.x {
-                println!("{each_y}: {each_x}");
-                //let each_x = (each_y-start.y)*((end.y-start.y)/(end.x-start.x)) + start.y;
-                //self.put_pixel(each_x as i16, each_y as i16, what);
+        //let (start, end) = if start > end { (end, start) } else { (start, end) };
+        let (start_x, end_x) = if start.x < end.x {
+            (start.x, end.x)
+        } else {
+            (end.x, start.x)
+        };
+        let (start_y, end_y) = if start.y < end.y {
+            (start.y, end.y)
+        } else {
+            (end.y, start.y)
+        };
+        for each_y in start_y..=end_y {
+            for each_x in start_x..=end_x {
+                let each_x = (each_y - start_y) * ((end_y - start_y) / (end_x - start_x)) + start_y;
+                self.put_pixel(each_x as i16, each_y as i16, what);
             }
         }
     }

@@ -21,14 +21,14 @@ fn draw_seconds(term: &mut Term, circle: &Circle, second: usize) {
 fn draw_minutes(term: &mut Term, circle: &Circle, minutes: usize) {
     let angle = (minutes / 6);
     let angle = angle as f64 / 57.2958;
-    //let point = circle.get_point(angle, |radius, angle| -> usize {
+    //let point = circle.get_point(angle, |radius, angle| -> isize {
     //    angle * (radius / 2)
     //});
 }
 
 fn draw_hours(term: &mut Term, circle: &Circle, hours: usize) {
-    let angle = (hours / 6) as usize;
-    //let point = circle.get_point(angle, |radius, angle| -> usize {
+    let angle = (hours / 6) as isize;
+    //let point = circle.get_point(angle, |radius, angle| -> isize {
     //    angle * (radius - 1)
     //});
 }
@@ -83,7 +83,7 @@ fn main() {
     */
     loop {
 
-        //term.clear();
+        term.clear();
 
         let time = Time::get_current_time();
         let seconds = Time::format_seconds(&time);
@@ -92,13 +92,13 @@ fn main() {
 
         let circle = Circle::new(20, 20);
 
-        //draw_clock(&mut term, &circle);
+        draw_clock(&mut term, &circle);
 
         draw_seconds(&mut term, &circle, seconds);
         draw_minutes(&mut term, &circle, minutes);
         draw_hours(&mut term, &circle, hours);
 
-        //term.flush();
+        term.flush();
 
 
         thread::sleep(Duration::from_secs(DELAY));
