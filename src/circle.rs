@@ -12,11 +12,12 @@ pub struct Circle {
 
 impl Circle {
     pub fn new(width: isize, heigth: isize) -> Self {
-        let radius = isize::min(width, heigth) / 2 - 1; 
+        let smallest = isize::min(width, heigth);
+        let radius = (smallest / 2) - 1; 
         Self {
             center: Point {
-                x: (width + 1) / 2,
-                y: (heigth + 1) / 2,
+                x: (smallest + 1) / 2,
+                y: (smallest + 1) / 2,
             },
             radius,
         }
