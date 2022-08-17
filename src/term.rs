@@ -28,6 +28,23 @@ impl Term {
     }
 
     pub fn draw_line(&mut self, start: &Point, end: &Point, what: &StyledContent<&str>) {
+        let dx = (end.x - start.x) as f64;
+        let dy = (end.y - start.y) as f64;
+
+        let len = if dx.abs() > dy.abs() { dx.abs() } else { dy.abs() } as f64;
+
+        let xinc = dx / len;
+        let yinc = dy / len;
+
+        let mut x = start.x as f64;
+        let mut y = start.x as f64;
+
+        for _ in 0..=len as i64 {
+            self.put_pixel(x.round() as i16, y.round() as i16, what);
+            x += xinc;
+            y += yinc;
+        }
+        /*
         let (start_x, end_x) = if start.x < end.x {
             (start.x, end.x)
         } else {
@@ -44,6 +61,7 @@ impl Term {
                 self.put_pixel(each_x as i16, each_y as i16, what);
             }
         }
+        */
     }
 
     pub fn put_pixel(&mut self, x: i16, y: i16, what: &StyledContent<&str>) {

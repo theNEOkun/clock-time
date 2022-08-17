@@ -9,10 +9,11 @@ use term::Term;
 use time::Time;
 
 const DELAY: u64 = 1;
+const DEG_TO_RAD: f64 = 57.29577;
 
 fn draw_seconds(term: &mut Term, circle: &Circle, second: usize) {
     let angle = (second * 6) as f64;
-    let angle_d = angle / 57.2958;
+    let angle_d = angle / DEG_TO_RAD;
     let point = circle.get_point(angle_d, |radius, angle| -> f64 {
         angle * (radius - 1) as f64
     });
@@ -21,18 +22,18 @@ fn draw_seconds(term: &mut Term, circle: &Circle, second: usize) {
 
 fn draw_minutes(term: &mut Term, circle: &Circle, minutes: usize) {
     let angle = (minutes * 6) as f64;
-    let angle_d = angle / 57.2958;
+    let angle_d = angle / DEG_TO_RAD;
     let point = circle.get_point(angle_d, |radius, angle| -> f64 {
-        angle * (radius / 2) as f64
+        angle * (radius - 3) as f64
     });
     term.draw_line(&circle.center, &point, &",".yellow());
 }
 
-fn draw_hours(term: &mut Term, circle: &Circle, hours: usize) {
-    let angle = (hours * 6) as f64;
-    let angle_d = angle / 57.2958;
+fn draw_hours(term: &mut Term, circle: &Circle, hours: usize, minutes: usize) {
+    let angle = ((hours * 30) + (minutes / 12) * 6) as f64;
+    let angle_d = angle / DEG_TO_RAD;
     let point = circle.get_point(angle_d, |radius, angle| -> f64 {
-        angle * (radius - 1) as f64
+        angle * (radius / 2) as f64
     });
     term.draw_line(&circle.center, &point, &"+".yellow());
 }
@@ -99,7 +100,7 @@ fn main() {
 
         draw_seconds(&mut term, &circle, seconds);
         draw_minutes(&mut term, &circle, minutes);
-        draw_hours(&mut term, &circle, hours);
+        draw_hours(&mut term, &circle, hours, minutes);
 
         term.flush();
 
