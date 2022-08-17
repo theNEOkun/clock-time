@@ -2,7 +2,7 @@ use std::io::{stdout, Stdout, Write};
 
 use crossterm::{
     cursor,
-    style::{self, Stylize},
+    style::{self, PrintStyledContent, StyledContent},
     terminal, ExecutableCommand, QueueableCommand, Result,
 };
 
@@ -27,7 +27,7 @@ impl Term {
         self.stdout.flush().expect("Could not flush the screen");
     }
 
-    pub fn draw_line(&mut self, start: &Point, end: &Point, what: &str) {
+    pub fn draw_line(&mut self, start: &Point, end: &Point, what: &StyledContent<&str>) {
         //let (start, end) = if start > end { (end, start) } else { (start, end) };
         let (start_x, end_x) = if start.x < end.x {
             (start.x, end.x)
@@ -47,11 +47,11 @@ impl Term {
         }
     }
 
-    pub fn put_pixel(&mut self, x: i16, y: i16, what: &str) {
+    pub fn put_pixel(&mut self, x: i16, y: i16, what: &StyledContent<&str>) {
         self.stdout
             .queue(cursor::MoveTo(x as u16, y as u16))
             .expect("Something went wrong when drawing the circle")
-            .queue(style::PrintStyledContent(what.magenta()))
+            .queue(PrintStyledContent(*what))
             .expect("Something went wrong with the coloring");
     }
 }

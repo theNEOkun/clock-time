@@ -2,6 +2,7 @@ mod circle;
 mod term;
 mod time;
 use std::{thread, time::Duration};
+use crossterm::style::{self, Stylize};
 
 use circle::{Circle, Point};
 use term::Term;
@@ -15,7 +16,7 @@ fn draw_seconds(term: &mut Term, circle: &Circle, second: usize) {
     let point = circle.get_point(angle_d, |radius, angle| -> f64 {
         angle * (radius - 1) as f64
     });
-    term.draw_line(&circle.center, &point, "-");
+    term.draw_line(&circle.center, &point, &"-".dark_green());
 }
 
 fn draw_minutes(term: &mut Term, circle: &Circle, minutes: usize) {
@@ -46,17 +47,17 @@ fn draw_clock(term: &mut Term, circle: &Circle) {
     let x0 = circle.center.x as i16;
     let y0 = circle.center.y as i16;
 
-    let what = "*";
+    let what = "*".magenta();
 
     while x >= y {
-        term.put_pixel(x0 + x, y0 + y, what);
-        term.put_pixel(x0 + y, y0 + x, what);
-        term.put_pixel(x0 - y, y0 + x, what);
-        term.put_pixel(x0 - x, y0 + y, what);
-        term.put_pixel(x0 + y, y0 - x, what);
-        term.put_pixel(x0 + x, y0 - y, what);
-        term.put_pixel(x0 - x, y0 - y, what);
-        term.put_pixel(x0 - y, y0 - x, what);
+        term.put_pixel(x0 + x, y0 + y, &what);
+        term.put_pixel(x0 + y, y0 + x, &what);
+        term.put_pixel(x0 - y, y0 + x, &what);
+        term.put_pixel(x0 - x, y0 + y, &what);
+        term.put_pixel(x0 + y, y0 - x, &what);
+        term.put_pixel(x0 + x, y0 - y, &what);
+        term.put_pixel(x0 - x, y0 - y, &what);
+        term.put_pixel(x0 - y, y0 - x, &what);
 
         if err <= 0 {
             y += 1;
