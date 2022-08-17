@@ -1,8 +1,11 @@
 mod circle;
 mod term;
 mod time;
+use crossterm::{
+    style::{self, Stylize},
+    terminal,
+};
 use std::{thread, time::Duration};
-use crossterm::{style::{self, Stylize}, terminal};
 
 use circle::{Circle, Point};
 use term::Term;
@@ -64,15 +67,15 @@ fn draw_hours(term: &mut Term, circle: &Circle, hours: usize, minutes: usize) {
 }
 
 fn draw_stubs(term: &mut Term, circle: &Circle) {
-    for angle in (0..360).step_by(30) {
+    for angle in (0..360).step_by(120) {
         let angle_d = angle as f64 / DEG_TO_RAD;
 
-        let point_1 = circle.get_point(angle_d, |radius, angle_a| -> f64 {
-            angle_a * radius as f64
+        let point_1 = circle.get_point(angle_d, |radius, angle| -> f64 {
+            angle * (radius) as f64
         });
 
-        let point_2 = circle.get_point(angle_d, |radius, angle_a| -> f64 {
-            angle_a * (radius - 2) as f64
+        let point_2 = circle.get_point(angle_d, |radius, angle| -> f64 {
+            angle * (radius - 5) as f64
         });
 
         term.draw_line(&point_1, &point_2, &"*".red());
@@ -83,14 +86,13 @@ fn main() {
     let mut term = Term::new();
     let circle = Circle::new(40, 60);
 
-/*
-    term.clear();
-    term.draw_line(&Point { x: 0, y: 0 }, &Point { x: 10, y: 5 }, &"*".magenta());
+    /*
+        term.clear();
+        term.draw_line(&Point { x: 0, y: 0 }, &Point { x: 10, y: 5 }, &"*".magenta());
 
-    term.flush();
-*/
+        term.flush();
+    */
     loop {
-
         term.clear();
 
         let time = Time::get_current_time();
