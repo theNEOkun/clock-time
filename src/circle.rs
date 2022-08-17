@@ -4,6 +4,7 @@ pub struct Point {
     pub y: usize,
 }
 
+#[derive(Debug)]
 pub struct Circle {
     pub center: Point,
     pub radius: usize,
@@ -11,7 +12,7 @@ pub struct Circle {
 
 impl Circle {
     pub fn new(width: usize, heigth: usize) -> Self {
-        let radius = usize::min(width, heigth) / 2;
+        let radius = usize::min(width, heigth) / 2 - 1; 
         Self {
             center: Point {
                 x: radius,
@@ -21,10 +22,10 @@ impl Circle {
         }
     }
 
-    pub fn get_point(&self, angle: usize, change: fn(usize, usize) -> usize) -> Point {
+    pub fn get_point(&self, angle: f64, change: fn(usize, f64) -> f64) -> Point {
         Point {
-            x: self.center.x + (change(self.radius, angle) as f64).sin() as usize,
-            y: self.center.y - (change(self.radius, angle) as f64).cos() as usize
+            x: self.center.x + (change(self.radius, angle.sin())) as usize,
+            y: self.center.y - (change(self.radius, angle.cos())) as usize
         }
     }
 }
