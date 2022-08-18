@@ -39,7 +39,7 @@ fn draw_minutes(term: &mut Term, circle: &Circle, minutes: usize) {
     let angle = (minutes * 6) as f64;
     let angle_d = angle / DEG_TO_RAD;
     let point = circle.get_point(angle_d, |radius, angle| -> f64 {
-        angle * (radius - 3) as f64
+        angle * (radius - 4) as f64
     });
     term.draw_line(&circle.center, &point, &"m".yellow());
 }

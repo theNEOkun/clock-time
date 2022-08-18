@@ -2,7 +2,7 @@ use std::io::{stdout, Stdout, Write};
 
 use crossterm::{
     cursor,
-    style::{self, PrintStyledContent, StyledContent, Stylize},
+    style::{PrintStyledContent, StyledContent, Stylize},
     terminal, ExecutableCommand, QueueableCommand, Result,
 };
 
