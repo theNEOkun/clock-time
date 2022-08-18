@@ -30,6 +30,12 @@ impl Term {
         self.stdout.flush().expect("Could not flush the screen");
     }
 
+    /// Method to draw to the screen
+    /// Clears the screen first, and after flushes it
+    ///
+    /// ## Arguments
+    ///
+    /// * func - Closure where the terminal is used to write to
     pub fn draw(&mut self, func: &mut dyn FnMut(&mut Self)) {
         self.clear();
         func(self);
