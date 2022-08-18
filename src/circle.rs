@@ -16,8 +16,8 @@ impl Circle {
         let radius = (smallest / 2) - 1;
         Self {
             center: Point {
-                x: (smallest + 1) / 2,
-                y: (smallest + 1) / 2,
+                x: (width + 1) / 2,
+                y: (heigth + 1) / 2,
             },
             radius,
         }

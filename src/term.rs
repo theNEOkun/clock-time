@@ -98,7 +98,7 @@ impl Term {
         let yinc = dy / len;
 
         let mut x = start.x as f64;
-        let mut y = start.x as f64;
+        let mut y = start.y as f64;
 
         for _ in 0..=len as i64 {
             self.put_pixel(x.round() as i16, y.round() as i16, what);
