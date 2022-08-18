@@ -66,7 +66,7 @@ fn draw_hours(term: &mut Term, circle: &Circle, hours: usize, minutes: usize) {
 ///
 /// * term - The terminal to write to
 /// * circle - The circle used for the clock-face
-fn draw_stubs(term: &mut Term, circle: &Circle) {
+fn draw_major_stubs(term: &mut Term, circle: &Circle) {
     for outside_angle in (0..360).step_by(30) {
         let angle_d = outside_angle as f64 / DEG_TO_RAD;
 
@@ -80,9 +80,31 @@ fn draw_stubs(term: &mut Term, circle: &Circle) {
     }
 }
 
+/// Function to write the stubs along the clock-rim
+///
+/// ## Arguments
+///
+/// * term - The terminal to write to
+/// * circle - The circle used for the clock-face
+fn draw_minor_stubs(term: &mut Term, circle: &Circle) {
+    for outside_angle in (0..360).step_by(6) {
+        let angle_d = outside_angle as f64 / DEG_TO_RAD;
+
+        let point_1 = circle.get_point(angle_d, |radius, angle| -> f64 { angle * (radius) as f64 });
+
+        let point_2 = circle.get_point(angle_d, |radius, angle| -> f64 {
+            angle * (radius - 1) as f64
+        });
+
+        term.draw_line(&point_1, &point_2, &"*".blue());
+    }
+}
+
 fn main() {
     let mut term = Term::new();
-    let circle = Circle::new(40, 60);
+    let width = 60;
+    let heigth = 60;
+    let circle = Circle::new(width, heigth);
 
     loop {
         let time = Time::get_current_time();
@@ -92,7 +114,8 @@ fn main() {
 
         term.draw(&mut |term| {
             term.draw_circle(&circle);
-            draw_stubs(term, &circle);
+            if circle.radius >= 29 { draw_minor_stubs(term, &circle); }
+            draw_major_stubs(term, &circle);
             draw_seconds(term, &circle, seconds);
             draw_minutes(term, &circle, minutes);
             draw_hours(term, &circle, hours, minutes);
