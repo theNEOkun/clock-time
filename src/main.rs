@@ -102,8 +102,8 @@ fn draw_minor_stubs(term: &mut Term, circle: &Circle) {
 
 fn main() {
     let mut term = Term::new();
-    let width = 60;
-    let heigth = 60;
+    let width = 30;
+    let heigth = 30;
     let circle = Circle::new(width, heigth);
 
     loop {
@@ -115,10 +115,10 @@ fn main() {
         term.draw(&mut |term| {
             term.draw_circle(&circle);
             if circle.radius >= 29 { draw_minor_stubs(term, &circle); }
-            draw_major_stubs(term, &circle);
+            //draw_major_stubs(term, &circle);
             draw_seconds(term, &circle, seconds);
-            draw_minutes(term, &circle, minutes);
-            draw_hours(term, &circle, hours, minutes);
+            //draw_minutes(term, &circle, minutes);
+            //draw_hours(term, &circle, hours, minutes);
         });
 
         thread::sleep(Duration::from_secs(DELAY));

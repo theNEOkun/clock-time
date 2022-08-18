@@ -49,6 +49,33 @@ impl Term {
     ///
     /// * circle - The circle to draw
     pub fn draw_circle(&mut self, circle: &Circle) {
+        let mut d: i16 = 3 - (2 * circle.radius as i16);
+        let mut x: i16 = 0;
+        let mut y = circle.radius as i16;
+
+        let x0 = circle.center.x as i16;
+        let y0 = circle.center.y as i16;
+
+        let what = "*".magenta();
+        while x <= y {
+            self.put_pixel(x0 + x, y0 + y, &what);
+            self.put_pixel(x0 + x, y0 - y, &what);
+            self.put_pixel(x0 - x, y0 + y, &what);
+            self.put_pixel(x0 - x, y0 - y, &what);
+            self.put_pixel(x0 + y, y0 + x, &what);
+            self.put_pixel(x0 + y, y0 - x, &what);
+            self.put_pixel(x0 - y, y0 + x, &what);
+            self.put_pixel(x0 - y, y0 - x, &what);
+
+            if d < 0 {
+                d = d + (4 * x) + 6;
+            } else {
+                d = d + 4 * ( x-y ) + 10;
+                y -= 1;
+            }
+            x += 1;
+        }
+        /*
         let radius = circle.radius as i16;
         let diam = (radius << 1) as i16;
 
@@ -85,6 +112,8 @@ impl Term {
                 err += dx - diam;
             }
         }
+        *
+        */
     }
 
     /// Method to draw a line to the terminal
@@ -97,14 +126,11 @@ impl Term {
     ///
     /// * what - What to write on the lines. Uses StyledContent
     pub fn draw_line(&mut self, start: &Point, end: &Point, what: &StyledContent<&str>) {
+
         let dx = (end.x - start.x) as f64;
         let dy = (end.y - start.y) as f64;
 
-        let len = if dx.abs() > dy.abs() {
-            dx.abs()
-        } else {
-            dy.abs()
-        } as f64;
+        let len = f64::sqrt(dx * dx + dy * dy);
 
         let xinc = dx / len;
         let yinc = dy / len;
