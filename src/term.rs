@@ -30,13 +30,19 @@ impl Term {
         self.stdout.flush().expect("Could not flush the screen");
     }
 
+    pub fn draw(&mut self, func: &mut dyn FnMut(&mut Self)) {
+        self.clear();
+        func(self);
+        self.flush();
+    }
+
     /// Function to draw the circle to the screen
     /// It uses some algorithm that I cannot use right now
     ///
     /// ## Arguments
     ///
     /// * circle - The circle to draw
-    pub fn draw_clock(&mut self, circle: &Circle) {
+    pub fn draw_circle(&mut self, circle: &Circle) {
         let radius = circle.radius as i16;
         let diam = (radius << 1) as i16;
 

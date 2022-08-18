@@ -85,21 +85,18 @@ fn main() {
     let circle = Circle::new(40, 60);
 
     loop {
-        term.clear();
-
         let time = Time::get_current_time();
         let seconds = Time::format_seconds(&time);
         let minutes = Time::format_minutes(&time);
         let hours = Time::format_hours(&time);
 
-        term.draw_clock(&circle);
-
-        draw_stubs(&mut term, &circle);
-        draw_seconds(&mut term, &circle, seconds);
-        draw_minutes(&mut term, &circle, minutes);
-        draw_hours(&mut term, &circle, hours, minutes);
-
-        term.flush();
+        term.draw(&mut |term| {
+            term.draw_circle(&circle);
+            draw_stubs(term, &circle);
+            draw_seconds(term, &circle, seconds);
+            draw_minutes(term, &circle, minutes);
+            draw_hours(term, &circle, hours, minutes);
+        });
 
         thread::sleep(Duration::from_secs(DELAY));
     }
