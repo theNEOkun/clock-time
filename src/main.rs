@@ -115,10 +115,10 @@ fn main() {
         term.draw(&mut |term| {
             term.draw_circle(&circle);
             if circle.radius >= 29 { draw_minor_stubs(term, &circle); }
-            //draw_major_stubs(term, &circle);
+            draw_major_stubs(term, &circle);
             draw_seconds(term, &circle, seconds);
-            //draw_minutes(term, &circle, minutes);
-            //draw_hours(term, &circle, hours, minutes);
+            draw_minutes(term, &circle, minutes);
+            draw_hours(term, &circle, hours, minutes);
         });
 
         thread::sleep(Duration::from_secs(DELAY));
