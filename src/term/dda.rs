@@ -6,6 +6,7 @@ use super::Term;
 
 
 /// Method to draw a line to the terminal
+/// It uses the DDA-algorithm [DDA][https://en.wikipedia.org/wiki/Digital_differential_analyzer_(graphics_algorithm)]
 ///
 /// ## Arguments
 /// * start - The point to start the line from

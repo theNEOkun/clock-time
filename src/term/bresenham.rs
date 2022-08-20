@@ -6,6 +6,7 @@ use super::Term;
 
 
 /// Method to draw a line to the terminal
+/// It uses the bresenahm-algorithm [bresenham][https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm]
 ///
 /// ## Arguments
 /// * start - The point to start the line from
