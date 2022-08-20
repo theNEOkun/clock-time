@@ -15,38 +15,19 @@ use super::Term;
 ///
 /// * what - What to write on the lines. Uses StyledContent
 pub fn draw_line(term: &mut Term, start: &Point, end: &Point, what: &StyledContent<&str>) {
-    let dx = (end.x - start.x) as f64;
-    let dy = (end.y - start.y) as f64;
-
-    let len = f64::sqrt(dx * dx + dy * dy);
-
-    let xinc = dx / len;
-    let yinc = dy / len;
-
-    let mut x = start.x as f64;
-    let mut y = start.y as f64;
-
-    for _ in 0..=len as i64 {
-        term.put_pixel(x.round() as i16, y.round() as i16, what);
-        x += xinc;
-        y += yinc;
-    }
-
-    /*
     if isize::abs(end.y - start.y) < isize::abs(end.x - start.x) {
         if start.x > end.x {
-            term.draw_line_low(end, start, what);
+            self::draw_line_low(term, end, start, what);
         } else {
-            term.draw_line_low(start, end, what);
+            self::draw_line_low(term, start, end, what);
         }
     } else {
         if start.y > end.y {
-            term.draw_line_high(end, start, what);
+            self::draw_line_high(term, end, start, what);
         } else {
-            term.draw_line_high(start, end, what);
+            self::draw_line_high(term, start, end, what);
         }
     }
-    */
 }
 
 /// Method to draw a line in the x-direction

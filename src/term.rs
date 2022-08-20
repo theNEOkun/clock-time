@@ -129,22 +129,7 @@ impl Term {
     ///
     /// * what - What to write on the lines. Uses StyledContent
     pub fn draw_line(&mut self, start: &Point, end: &Point, what: &StyledContent<&str>) {
-        let dx = (end.x - start.x) as f64;
-        let dy = (end.y - start.y) as f64;
-
-        let len = f64::sqrt(dx * dx + dy * dy);
-
-        let xinc = dx / len;
-        let yinc = dy / len;
-
-        let mut x = start.x as f64;
-        let mut y = start.y as f64;
-
-        for _ in 0..=len as i64 {
-            self.put_pixel(x.round() as i16, y.round() as i16, what);
-            x += xinc;
-            y += yinc;
-        }
+        bresenham::draw_line(self, start, end, what);
     }
 
     /// Method to put a pixel at the x and y coordinates
