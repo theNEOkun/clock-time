@@ -129,7 +129,7 @@ impl Term {
     ///
     /// * what - What to write on the lines. Uses StyledContent
     pub fn draw_line(&mut self, start: &Point, end: &Point, what: &StyledContent<&str>) {
-        bresenham::draw_line(self, start, end, what);
+        dda::draw_line_float(self, start, end, what);
     }
 
     /// Method to put a pixel at the x and y coordinates

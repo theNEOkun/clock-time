@@ -47,7 +47,11 @@ pub fn draw_line_int(term: &mut Term, start: &Point, end: &Point, what: &StyledC
     let dx = (end.x - start.x) as f64;
     let dy = (end.y - start.y) as f64;
 
-    let len = f64::sqrt(dx * dx + dy * dy);
+    let len = if dx.abs() <= dy.abs() {
+        dy.abs()
+    } else {
+        dx.abs()
+    };
 
     let xinc = dx / len;
     let yinc = dy / len;
