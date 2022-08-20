@@ -12,6 +12,9 @@ pub struct Circle {
 
 impl Circle {
     pub fn new(width: isize, heigth: isize) -> Self {
+        let test = |num: isize| if num % 2 == 0 { num - 1 } else { num };
+        let width = test(width);
+        let heigth = test(heigth);
         let smallest = isize::min(width, heigth);
         let radius = (smallest / 2) - 1;
         Self {
